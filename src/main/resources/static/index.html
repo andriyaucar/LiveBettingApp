@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Live Betting</title>
+</head>
+<body>
+    <h1>Live Match Odds</h1>
+    <div id="odds"></div>
+
+    <script>
+        const source = new EventSource("/match-odds-history");
+        const oddsOutput = document.getElementById("odds");
+
+        source.onmessage = function(oddsData) {
+         const output = JSON.parse(oddsData.data);
+
+         output.forEach(function(odd) {
+             oddsOutput.innerHTML += `<p>Home Team: ${odd.match.homeTeam}, Away Team: ${odd.match.awayTeam}, Home Odds: ${odd.homeWinOdds}, Draw Odds: ${odd.drawOdds}, Away Odds: ${odd.awayWinOdds}, Created At: ${odd.createdAt}</p>`;
+         });
+        };
+    </script>
+</body>
+</html>
